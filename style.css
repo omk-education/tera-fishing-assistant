@@ -341,3 +341,25 @@ table td:not(:first-child) {
     font-size: 10px;
   }
 }
+
+/* Выделение строки "Шедевр" */
+tr:last-child td:first-child {
+  background: #1e293b !important;
+  color: #fbbf24 !important;
+  font-weight: bold;
+  border-top: 2px solid #fbbf24;
+}
+
+tr:last-child .name {
+  color: #fbbf24 !important;
+  font-weight: bold;
+}
+
+tr:last-child .fish-cell {
+  border-top: 2px solid #fbbf24;
+}
+
+/* Дополнительная подсветка при наведении на шедевры */
+tr:last-child .fish-cell:hover {
+  background: rgba(251, 191, 36, 0.15) !important;
+}

@@ -49,23 +49,28 @@ function renderFishTable(tableId, region) {
   thead.appendChild(hr);
   table.appendChild(thead);
 
+  // Разделяем обычных рыб и шедевры
   const byRank = {};
+  let masterpieces = [];
+
   fishList.forEach(fish => {
-    const r = fish.rank === "Шедевр" ? "Шедевр" : fish.rank;
-    if (!byRank[r]) byRank[r] = [];
-    byRank[r].push(fish);
+    if (fish.rank === "Шедевр") {
+      masterpieces.push(fish);
+    } else {
+      const r = fish.rank;
+      if (!byRank[r]) byRank[r] = [];
+      byRank[r].push(fish);
+    }
   });
 
-  const sortedRanks = Object.keys(byRank).sort((a, b) => {
-    if (a === "Шедевр") return 1;
-    if (b === "Шедевр") return -1;
-    return Number(a) - Number(b);
-  });
+  // Сортируем обычные ранги по возрастанию
+  const sortedRanks = Object.keys(byRank).sort((a, b) => Number(a) - Number(b));
 
   const tbody = document.createElement('tbody');
 
+  // === Обычные ранги (с фильтрацией по удочке) ===
   sortedRanks.forEach(rank => {
-    const numeric = rank === "Шедевр" ? 999 : Number(rank);
+    const numeric = Number(rank);
     const available = numeric >= currentMin && numeric <= currentMax;
     if (!available) return;
 
@@ -112,6 +117,55 @@ function renderFishTable(tableId, region) {
 
     tbody.appendChild(tr);
   });
+
+  // === Шедевры — всегда в самом низу, независимо от удочки ===
+  if (masterpieces.length > 0) {
+    const tr = document.createElement('tr');
+
+    const tdRank = document.createElement('td');
+    tdRank.textContent = 'Шедевр';
+    tdRank.style.fontWeight = 'bold';
+    tdRank.style.color = '#fbbf24';
+    tdRank.style.background = '#1e293b';
+    tr.appendChild(tdRank);
+
+    locations.forEach(loc => {
+      const td = document.createElement('td');
+      td.classList.add('fish-cell');
+      td.dataset.location = loc;
+
+      const fishesHere = masterpieces.filter(fish => fish.l.includes(loc));
+
+      if (fishesHere.length > 0) {
+        const container = document.createElement('div');
+        container.className = 'fish-container';
+
+        fishesHere.forEach(fish => {
+          const fishItem = document.createElement('div');
+          fishItem.className = 'fish-item';
+          fishItem.dataset.fishId = fish.id;
+          fishItem.innerHTML = `
+            <img src="images/${fish.id}.webp" alt="${fish.name}"
+                 onerror="this.onerror=null; this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCI+PHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjMzMzIj48L3JlY3Q+PHRleHQgeD0iMjUiIHk9IjMwIiBmb250LXNpemU9IjEyIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+PyA8L3RleHQ+PC9zdmc+';">
+            <div class="name" style="color:#fbbf24; font-weight:bold;">${fish.name}</div>
+          `;
+          fishItem.onclick = (e) => {
+            e.stopPropagation();
+            selectFish(fish);
+          };
+          container.appendChild(fishItem);
+        });
+
+        td.appendChild(container);
+      } else {
+        td.innerHTML = '—';
+      }
+
+      tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
+  }
 
   table.appendChild(tbody);
 }
@@ -187,11 +241,11 @@ const initialRod = rods.find(r => r.display === savedRod) || rods[0];
 
 const savedTab = getCookie('selectedTab') || 'arborea';
 
-// Сначала отрисовываем таблицы (важно!)
+// Сначала отрисовываем таблицы
 renderTables();
 
-// Затем выбираем удочку (она может вызвать resetHighlight, но таблицы уже готовы)
+// Затем выбираем удочку
 selectRod(initialRod.display, initialRod.min, initialRod.max);
 
-// Наконец открываем сохранённую вкладку (resetHighlight внутри openTab безопасен)
+// Наконец открываем вкладку
 openTab(savedTab);
