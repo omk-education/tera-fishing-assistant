@@ -116,13 +116,18 @@ function renderFishTable(tableId, region) {
   table.appendChild(tbody);
 }
 
+// Выбор рыбы — подсвечиваем все ячейки с этой рыбой
 function selectFish(fish) {
   selectedFish = fish;
   resetHighlight();
 
-  document.querySelectorAll('.fish-item').forEach(item => {
-    if (parseInt(item.dataset.fishId) === fish.id) {
-      item.classList.add('selected-fish');
+  const activeTable = document.querySelector('.tab-content.active table');
+  if (!activeTable) return;
+
+  activeTable.querySelectorAll('td.fish-cell').forEach(td => {
+    const hasFish = td.querySelector(`.fish-item[data-fish-id="${fish.id}"]`);
+    if (hasFish) {
+      td.classList.add('selected-cell');
     }
   });
 
@@ -134,12 +139,10 @@ function highlightColumn(locationName) {
   const activeTable = document.querySelector('.tab-content.active table');
   if (!activeTable) return;
 
-  activeTable.querySelectorAll('thead th').forEach(th => {
-    if (th.dataset.location === locationName) th.classList.add('column-highlight');
-  });
-
-  activeTable.querySelectorAll('tbody td.fish-cell').forEach(td => {
-    if (td.dataset.location === locationName) td.classList.add('column-highlight');
+  activeTable.querySelectorAll('thead th, tbody td.fish-cell').forEach(el => {
+    if (el.dataset.location === locationName) {
+      el.classList.add('column-highlight');
+    }
   });
 }
 
@@ -156,26 +159,39 @@ function highlightLocations(selectedLocations) {
 
 function resetHighlight() {
   selectedFish = null;
-  document.querySelectorAll('.selected-fish').forEach(el => el.classList.remove('selected-fish'));
+
+  document.querySelectorAll('.selected-cell').forEach(el => el.classList.remove('selected-cell'));
   document.querySelectorAll('.column-highlight').forEach(el => el.classList.remove('column-highlight'));
   document.querySelectorAll('.location-highlight').forEach(el => el.classList.remove('location-highlight'));
 }
 
 function openTab(tabName) {
+  document.cookie = `selectedTab=${tabName}; path=/; max-age=31536000`;
+
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.tab-button').forEach(b => b.classList.remove('active'));
   document.getElementById(tabName).classList.add('active');
   document.querySelector(`.tab-button[onclick="openTab('${tabName}')"]`).classList.add('active');
+
   resetHighlight();
 }
 
 function getCookie(name) {
   const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-  return match ? match[2] : null;
+  return match ? decodeURIComponent(match[2]) : null;
 }
 
-const saved = getCookie('selectedRod');
-const initial = rods.find(r => r.display === saved) || rods[0];
+// === ИНИЦИАЛИЗАЦИЯ ===
+const savedRod = getCookie('selectedRod');
+const initialRod = rods.find(r => r.display === savedRod) || rods[0];
 
-selectRod(initial.display, initial.min, initial.max);
+const savedTab = getCookie('selectedTab') || 'arborea';
+
+// Сначала отрисовываем таблицы (важно!)
 renderTables();
+
+// Затем выбираем удочку (она может вызвать resetHighlight, но таблицы уже готовы)
+selectRod(initialRod.display, initialRod.min, initialRod.max);
+
+// Наконец открываем сохранённую вкладку (resetHighlight внутри openTab безопасен)
+openTab(savedTab);
