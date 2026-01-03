@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рыбалка в TERA</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="data.js" defer></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Рыбалка в TERA</h1>
+
+        <!-- Единая панель: удочки + сброс -->
+        <div class="control-panel">
+            <div class="rods-selector" id="rodsSelector"></div>
+            <button type="button" class="reset-btn" onclick="resetHighlight()">Сбросить подсветку</button>
+        </div>
+
+        <!-- Табы -->
+        <div class="tabs">
+            <button type="button" class="tab-button active" onclick="openTab('arborea')">Арборея</button>
+            <button type="button" class="tab-button" onclick="openTab('exodor')">Экзодор</button>
+        </div>
+
+        <div id="arborea" class="tab-content active">
+            <table id="arboreaTable"></table>
+        </div>
+        <div id="exodor" class="tab-content">
+            <table id="exodorTable"></table>
+        </div>
+    </div>
+</body>
+</html>

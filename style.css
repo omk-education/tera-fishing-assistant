@@ -1,0 +1,341 @@
+/* === Цветовые переменные === */
+:root {
+  --bg-body: #0f172a;
+  --bg-container: rgba(15, 23, 42, 0.8);
+  --bg-panel: #1e293b;
+  --bg-table: #0f172a;
+  --bg-header: #1e293b;
+  --bg-rank: #161f30;
+  --bg-cell-hover: #334155;
+
+  --text-primary: #e2e8f0;
+  --text-secondary: #cbd5e1;
+  --text-accent: #fbbf24;
+
+  --border-primary: #334155;
+  --border-secondary: #475569;
+  --border-accent: #818cf8;
+
+  --accent-indigo: #6366f1;
+  --accent-indigo-light: #818cf8;
+  --accent-red: #dc2626;
+  --accent-red-hover: #ef4444;
+  --accent-yellow: #fbbf24;
+
+  --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.2);
+  --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* === Основные стили === */
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: url("images/background.webp") center/cover fixed;
+  color: var(--text-primary);
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+h1 {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  font-size: 2.2em;
+  font-weight: 600;
+}
+
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+  background: var(--bg-container);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow-medium);
+}
+
+/* === Панель управления === */
+.control-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px 0;
+  padding: 20px 28px;
+  background: var(--bg-panel);
+  border-radius: 16px;
+  border: 1px solid var(--border-primary);
+  box-shadow: var(--shadow-soft);
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.rods-selector {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.rods-selector button {
+  padding: 10px 18px;
+  font-size: 16px;
+  background: var(--border-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-secondary);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 50px;
+  font-weight: 500;
+}
+
+.rods-selector button:hover {
+  background: var(--bg-cell-hover);
+  border-color: #64748b;
+  transform: translateY(-2px);
+}
+
+.rods-selector button.selected {
+  background: var(--accent-indigo-light);
+  color: white;
+  border-color: var(--border-accent);
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(129, 140, 248, 0.3);
+}
+
+.reset-btn {
+  padding: 10px 24px;
+  font-size: 16px;
+  background: var(--accent-red);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.reset-btn:hover {
+  background: var(--accent-red-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+}
+
+/* === Табы === */
+.tabs {
+  display: flex;
+  background: var(--bg-panel);
+  border-radius: 12px 12px 0 0;
+  overflow: hidden;
+  border: 1px solid var(--border-primary);
+}
+
+.tab-button {
+  flex: 1;
+  padding: 16px;
+  background: var(--bg-panel);
+  color: var(--text-secondary);
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.2s;
+}
+
+.tab-button:hover {
+  background: var(--bg-cell-hover);
+}
+
+.tab-button.active {
+  background: var(--accent-indigo);
+  color: white;
+  font-weight: 600;
+}
+
+.tab-content {
+  display: none;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-primary);
+  border-top: none;
+  border-radius: 0 0 12px 12px;
+  padding: 20px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+/* === Таблица === */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--bg-table);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  table-layout: fixed; /* Фиксированная раскладка */
+}
+
+th, td {
+  border: 1px solid var(--border-primary);
+  padding: 10px 8px;
+  text-align: center;
+  vertical-align: middle;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+th {
+  background: var(--bg-header);
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Фиксированный "Ранг" */
+table th:first-child,
+table td:first-child {
+  width: 80px;
+  min-width: 80px;
+  max-width: 80px;
+  background: var(--bg-rank);
+  border-right: 2px solid var(--border-secondary);
+  font-weight: 600;
+}
+
+/* Перенос заголовков локаций по словам */
+table th:not(:first-child) {
+  white-space: normal;           /* Разрешаем перенос строк */
+  word-break: keep-all;          /* НЕ ломать слова посередине */
+  overflow-wrap: break-word;     /* Перенос длинных слов, если нужно */
+  line-height: 1.4;
+  padding: 10px 6px;
+  font-size: 13px;
+  hyphens: none;                 /* Отключаем автоматические дефисы (тире в середине слова) */
+}
+
+/* Равномерные столбцы локаций */
+table th:not(:first-child),
+table td:not(:first-child) {
+  width: calc((100% - 80px) / var(--location-count, 6));
+  min-width: 110px;
+}
+
+/* Ячейки с рыбой */
+.fish-cell {
+  min-height: 120px;
+  padding: 8px;
+  transition: background 0.2s ease;
+}
+
+.fish-cell:hover {
+  background: var(--bg-cell-hover);
+}
+
+.fish-cell .fish-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-content: flex-start;
+  height: 100%;
+}
+
+.fish-cell .fish-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 70px;
+  max-width: 90px;
+  flex: 1;
+}
+
+.fish-cell img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  border-radius: 6px;
+  margin-bottom: 4px;
+}
+
+.fish-cell .name {
+  font-size: 12px;
+  color: var(--text-primary);
+  text-align: center;
+  word-break: break-word;
+  white-space: normal;
+  line-height: 1.3;
+  max-width: 80px;
+}
+
+.fish-cell.unavailable {
+  opacity: 0.4;
+  background: #1e1b2e;
+}
+
+.fish-cell.unavailable img {
+  filter: grayscale(70%);
+}
+
+/* === Подсветки === */
+.fish-item.selected-fish {
+  background: rgba(251, 191, 36, 0.2);
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.fish-item.selected-fish img {
+  filter: drop-shadow(0 0 10px var(--accent-yellow));
+}
+
+.column-highlight {
+  background: rgba(57, 64, 105, 0.3) !important;
+}
+
+.location-highlight {
+  background: var(--accent-yellow) !important;
+  color: #1e293b !important;
+  font-weight: bold;
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+}
+
+.hidden-rank {
+  display: none;
+}
+
+/* === Адаптивность === */
+@media (max-width: 1024px) {
+  table th:not(:first-child),
+  table td:not(:first-child) {
+    min-width: 100px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .control-panel {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .rods-selector {
+    justify-content: center;
+  }
+  .reset-btn {
+    align-self: center;
+    margin-top: 10px;
+  }
+
+  table th:not(:first-child),
+  table td:not(:first-child) {
+    min-width: 90px;
+  }
+
+  .fish-cell img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .fish-cell .name {
+    font-size: 10px;
+  }
+}
