@@ -18,7 +18,7 @@
 
   --accent-indigo: #4c4ff5;
   --accent-indigo-light: #6574fc;
-  --accent-red: #dc2626;
+  --accent-red: #fc2b2b;
   --accent-red-hover: #ef4444;
   --accent-yellow: #fbbf24;
 
@@ -99,14 +99,13 @@ h1 {
   color: white;
   border-color: var(--border-accent);
   font-weight: 600;
-  /* box-shadow: 0 4px 10px rgba(129, 140, 248, 0.3); */
 }
 
 .reset-btn {
   padding: 10px 24px;
   font-size: 16px;
-  background: var(--accent-red);
-  color: white;
+  background: var(--border-primary);
+  color: var(--accent-red);
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -115,9 +114,9 @@ h1 {
 }
 
 .reset-btn:hover {
+  color: var(--border-primary);
   background: var(--accent-red-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
 }
 
 /* === Табы === */
@@ -175,7 +174,8 @@ table {
   table-layout: fixed; /* Фиксированная раскладка */
 }
 
-th, td {
+th,
+td {
   border: 1px solid var(--border-primary);
   padding: 10px 8px;
   text-align: center;
@@ -204,13 +204,13 @@ table td:first-child {
 
 /* Перенос заголовков локаций по словам */
 table th:not(:first-child) {
-  white-space: normal;           /* Разрешаем перенос строк */
-  word-break: normal;            /* Стандартный перенос (по пробелам) */
-  overflow-wrap: anywhere;       /* Разрешает перенос в любом месте, но предпочитает пробелы */
+  white-space: normal; /* Разрешаем перенос строк */
+  word-break: normal; /* Стандартный перенос (по пробелам) */
+  overflow-wrap: anywhere; /* Разрешает перенос в любом месте, но предпочитает пробелы */
   line-height: 1.4;
   padding: 10px 6px;
   font-size: 13px;
-  hyphens: none;                 /* Отключаем автоматические дефисы (тире в середине слова) */
+  hyphens: none; /* Отключаем автоматические дефисы (тире в середине слова) */
 }
 
 /* Равномерные столбцы локаций */
@@ -265,8 +265,8 @@ table td:not(:first-child) {
   color: var(--text-primary);
   text-align: center;
   white-space: normal;
-  word-break: normal;            /* Стандартный перенос (по пробелам) */
-  overflow-wrap: anywhere;       /* Разрешает перенос в любом месте, но предпочитает пробелы */
+  word-break: normal; /* Стандартный перенос (по пробелам) */
+  overflow-wrap: anywhere; /* Разрешает перенос в любом месте, но предпочитает пробелы */
   line-height: 1.4;
   max-width: 90px;
   hyphens: none;
